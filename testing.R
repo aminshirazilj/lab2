@@ -1,5 +1,11 @@
-library(ggplot2)
-library(sf)
+package_required <- c("ggplot2", "sf", "ggspatial","maps","maptools", "rgeos")
+for (packages_name in package_required) {
+  if(!is.element(packages_name, installed.packages()[])){
+    install.packages(packages_name)
+  }
+  else {print(paste(packages_name,"library already installed"))}
+}
+sapply(package_required, require, character.only=TRUE)
 
 
 p <- ggplot() +
@@ -10,8 +16,23 @@ p <- ggplot() +
   geom_sf(data = read_sf("data/ME-GIS/PrimaryRoads.shp"), 
           size = 0.7, colour="grey30") +
   geom_sf(data = read_sf("data/ME-GIS/Cities.shp")) +
-  geom_sf_text(aes(label = Name), data = read_sf("data/ME-GIS/Cities.shp")) +
   theme_bw()
-p
-library(ggspatial)
-p+annotation_scale()+ annotation_north_arrow()
+
+
+p <- p +  geom_sf_text(aes(label = Name), data = read_sf("data/ME-GIS/Cities.shp")) +
+  annotation_scale() +
+  annotation_north_arrow()
+
+ozbig <- read_sf("data/gadm36_AUS_shp/gadm36_AUS_1.shp")
+
+oz_st <- maptools::thinnedSpatialPoly(
+  as(ozbig, "Spatial"), tolerance = 0.1, 
+  minarea = 0.001, topologyPreserve = TRUE)
+oz <- st_as_sf(oz_st)
+
+ozplus<-purrr::flatten(oz$geometry)
+
+
+
+
+ozplus %>% ggplot(aes(x = long, y = lat, group = group)) + geom_polygon()
