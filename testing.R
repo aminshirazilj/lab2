@@ -12,3 +12,6 @@ p <- ggplot() +
   geom_sf(data = read_sf("data/ME-GIS/Cities.shp")) +
   geom_sf_text(aes(label = Name), data = read_sf("data/ME-GIS/Cities.shp")) +
   theme_bw()
+p
+library(ggspatial)
+p+annotation_scale()+ annotation_north_arrow()
