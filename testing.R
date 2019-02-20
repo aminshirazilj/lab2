@@ -11,7 +11,6 @@ for (packages_name in package_required) {
 }
 sapply(package_required, require, character.only=TRUE)
 
-
 p <- ggplot() +
   geom_sf(data = read_sf("data/ME-GIS/Coastline2.shp"), 
           colour="grey10", fill="grey90") +
