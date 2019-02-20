@@ -1,4 +1,8 @@
-package_required <- c("ggplot2", "sf", "ggspatial","maps","maptools")
+rm(list=ls())
+dev.off()
+
+
+package_required <- c("ggplot2", "sf", "ggspatial","maps","maptools","rgeos","purrr","tidyverse")
 for (packages_name in package_required) {
   if(!is.element(packages_name, installed.packages()[])){
     install.packages(packages_name)
@@ -29,3 +33,9 @@ oz_st <- maptools::thinnedSpatialPoly(
   minarea = 0.001, topologyPreserve = TRUE)
 oz <- st_as_sf(oz_st)
 
+#ozplus <- as.tibble(oz) %>% mutate(
+#  x = geometry %>% purrr::map_dbl(.f = function(m) m[[1]]$x),
+#  y = geometry %>% purrr::map_dbl(.f = function(m) m[[1]]$y)
+#) %>% head
+  
+ozplus %>% ggplot(aes(x = long, y = lat, group = group)) + geom_polygon()
