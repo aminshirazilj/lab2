@@ -3,8 +3,9 @@ title: "STAT585 Lab#2"
 author: "Team #10"
 date: "February 20, 2019"
 output:
-  html_document: default
-  pdf_document: default
+  html_document:
+    toc: true
+    theme: united
 ---
 
 ```{r setup, include=FALSE}
