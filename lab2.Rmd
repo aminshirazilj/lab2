@@ -9,11 +9,14 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# 1.
-```{r base map plotS}
+
+
+```{r load package, message=F, results='hide'}
 package_required <- c("ggplot2", "sf", "ggspatial","maps","maptools","rgeos","purrr","tidyverse")
 sapply(package_required, require, character.only=TRUE)
+```
 
+```{r base map plotS}
 p <- ggplot() +
   geom_sf(data = read_sf("data/ME-GIS/Coastline2.shp"), 
           colour="grey10", fill="grey90") +
