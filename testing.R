@@ -32,9 +32,17 @@ oz_st <- maptools::thinnedSpatialPoly(
   minarea = 0.001, topologyPreserve = TRUE)
 oz <- st_as_sf(oz_st)
 
-#ozplus <- as.tibble(oz) %>% mutate(
-#  x = geometry %>% purrr::map_dbl(.f = function(m) m[[1]]$x),
-#  y = geometry %>% purrr::map_dbl(.f = function(m) m[[1]]$y)
-#) %>% head
-  
-ozplus %>% ggplot(aes(x = long, y = lat, group = group)) + geom_polygon()
+ozplus <- oz %>% select(NAME_1, geometry) %>% 
+  group_by() %>% 
+  mutate(coord = geometry %>% map(.f = function(m) flatten(.x=m)),
+         region = row_number()) %>% 
+  unnest
+
+st_geometry(ozplus) <- NULL
+ozplus <- ozplus %>% mutate(coord = coord %>% map(.f = function(m) as_tibble(m)),
+                            group = row_number()) %>% 
+  unnest
+
+ozplus %>% ggplot(aes(x = x, y = y, group = group)) + geom_polygon(color = "black")
+
+
