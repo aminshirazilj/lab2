@@ -1,4 +1,12 @@
+<<<<<<< HEAD
 package_required <- c("ggplot2", "sf", "ggspatial","maps","maptools", "rgeos")
+=======
+rm(list=ls())
+dev.off()
+
+
+package_required <- c("ggplot2", "sf", "ggspatial","maps","maptools","rgeos","purrr","tidyverse")
+>>>>>>> 328e0bc25a5cf959704fe456bc8bfe83b4e71157
 for (packages_name in package_required) {
   if(!is.element(packages_name, installed.packages()[])){
     install.packages(packages_name)
@@ -6,7 +14,6 @@ for (packages_name in package_required) {
   else {print(paste(packages_name,"library already installed"))}
 }
 sapply(package_required, require, character.only=TRUE)
-
 
 p <- ggplot() +
   geom_sf(data = read_sf("data/ME-GIS/Coastline2.shp"), 
@@ -30,9 +37,15 @@ oz_st <- maptools::thinnedSpatialPoly(
   minarea = 0.001, topologyPreserve = TRUE)
 oz <- st_as_sf(oz_st)
 
+
 ozplus<-purrr::flatten(oz$geometry)
 
 
 
 
 ozplus %>% ggplot(aes(x = long, y = lat, group = group)) + geom_polygon()
+
+#ozplus <- as.tibble(oz) %>% mutate(
+#  x = geometry %>% purrr::map_dbl(.f = function(m) m[[1]]$x),
+#  y = geometry %>% purrr::map_dbl(.f = function(m) m[[1]]$y)
+#) %>% head
