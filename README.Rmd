@@ -12,7 +12,6 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 
 ```
-#### github link
 Please click [here](https://github.com/aminshirazilj/lab2) for github repository link. 
 
 
